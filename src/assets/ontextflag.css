@@ -1,0 +1,30 @@
+#ontextflag {
+    width: 100vw;
+    height: 100vh;
+    border: 6px solid transparent;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999999;
+    pointer-events: none;
+}
+
+#ontextflaghander {
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    line-height: 40px;
+    text-align: center;
+    color: white;
+    cursor: move;
+    pointer-events: all;
+    user-select: none;
+    font-size: 14px;
+
+    /*box-shadow: 0 0 20px 10px rgba(0 ,0, 0 , 0.1), 0 0 20px 3px rgba(0, 0, 0 , 0.1);*/
+}

@@ -1,0 +1,56 @@
+{
+  "name": "martin-extension",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "sh shell/build.sh && BUILD_ENV=development vite build --watch",
+    "debug": "npx --node-arg=--inspect-brk vite build --watch",
+    "build": "sh shell/build.sh && vite build",
+    "serve": "vite preview",
+    "zip": "sh shell/zip.sh",
+    "preview": "vite preview",
+    "eslint": "eslint -ext .js, .jsx, .ts, .tsx src",
+    "lint": "lint-staged",
+    "prettier": "prettier --write",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**": [
+      "prettier"
+    ]
+  },
+  "commotlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "dependencies": {
+    "sass": "^1.53.0",
+    "terser": "^5.14.2",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.2"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^17.0.3",
+    "@types/chrome": "^0.0.193",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "@vitejs/plugin-vue": "^3.0.0",
+    "commitlint": "^17.0.3",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.2.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "naive-ui": "^2.31.0",
+    "prettier": "^2.7.1",
+    "rollup": "^2.76.0",
+    "typescript": "^4.6.4",
+    "unplugin-vue-components": "^0.21.1",
+    "vfonts": "^0.0.3",
+    "vite": "^3.0.0",
+    "vue-tsc": "^0.38.4"
+  }
+}

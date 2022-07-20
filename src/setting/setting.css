@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    place-items: flex-start;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
+#app .jh-wang-setting-box {
+    margin: 32px 64px !important;
+}
+#app {
+    width: 100%;
+    text-align: left;
+}

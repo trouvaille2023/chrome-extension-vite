@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 380px;
+    width: 380px;
+    min-height: 320px;
+}
+
+#app {
+    width: 100%;
+    text-align: center;
+}
