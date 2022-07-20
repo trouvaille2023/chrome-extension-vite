@@ -1,3 +1,9 @@
+### 仓库地址
+
+源库：https://github.com/1163895390wjh/chrome-extension-vite
+
+国内镜像库 https://gitee.com/mr-jinhui/chrome-extension-vite
+
 ### 计划的功能列表
 
 - 替换默认的浏览器新标签页
