@@ -10,7 +10,7 @@
     "serve": "vite preview",
     "zip": "sh shell/zip.sh",
     "preview": "vite preview",
-    "eslint": "eslint -ext .js, .jsx, .ts, .tsx src",
+    "eslint": "eslint -ext .js, .jsx, .ts, .tsx, .vue src",
     "lint": "lint-staged",
     "prettier": "prettier --write",
     "prepare": "husky install"
