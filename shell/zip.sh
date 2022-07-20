@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Version key/value should be on his own line
-PACKAGE_VERSION=$(cat ../output/manifest.json \
+PACKAGE_VERSION=$(cat ../package.json \
   | grep version \
   | head -1 \
   | awk -F: '{ print $2 }' \
