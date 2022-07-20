@@ -1,3 +1,18 @@
+// type ModelType = {
+//     id: number, //id
+//     site: string, //网址
+//     badgeBool: boolean, //显示标记
+//     badgeText: string, //标记文字
+//     badgeColor: string, //标记颜色
+//     boxBool: boolean, //显示边框
+//     boxColor: string, //边框颜色
+//     fillBool: boolean, //自动填充
+//     fillAccount: string, //填充用的用户名
+//     fillPasswd: string, //填充用的密码
+//     handleBool: boolean, //是否手动修正选择器
+//     handleAccount: string, //用户名选择器
+//     handlePasswd: string, //密码选择器
+// };
 function initData() {
     console.log('====-->', 'initData');
 
@@ -5,12 +20,36 @@ function initData() {
         if (!Object.values(result).length) {
             console.count('siteList');
             let siteList = [
-                { site: 'saas.ibtool.cn', target: 'pro', default: true, boxColor: '#FF00007F', badgeColor: '#FF0000CC', text: 'PROD' },
-                { site: 'client.ibtool.cn', target: 'pro', default: true, boxColor: '#FF00007F', badgeColor: '#FF0000CC', text: 'PROD' },
-                { site: 'saas.dev.ibtool.cn', target: 'dev', default: true, boxColor: '#00FF883A', badgeColor: '#00FF00CC', text: 'DEV' },
-                { site: 'saas.sit.ibtool.cn', target: 'sit', default: true, boxColor: '#5900FF3E', badgeColor: '#5900FFCC', text: 'SIT' },
-                { site: 'saas.client.dev.ibtool.cn', target: 'dev', default: true, boxColor: '#00FF883A', badgeColor: '#00FF00CC', text: 'DEV' },
-                { site: 'saas.client.sit.ibtool.cn', target: 'sit', default: true, boxColor: '#5900FF3E', badgeColor: '#5900FFCC', text: 'SIT' },
+                {
+                    id: Date.now(),
+                    site: 'localhost',
+                    badgeBool: true,
+                    badgeText: '本地',
+                    badgeColor: '#18A058',
+                    boxBool: true,
+                    boxColor: '#18A058',
+                    fillBool: true,
+                    fillAccount: '13800138000',
+                    fillPasswd: '123456',
+                    handleBool: false,
+                    handleAccount: '',
+                    handlePasswd: '',
+                },
+                {
+                    id: Date.now() + 1000,
+                    site: '127.0.0.1',
+                    badgeBool: true,
+                    badgeText: '本地',
+                    badgeColor: '#18A058',
+                    boxBool: true,
+                    boxColor: '#18A058',
+                    fillBool: true,
+                    fillAccount: '13800138000',
+                    fillPasswd: '123456',
+                    handleBool: false,
+                    handleAccount: '',
+                    handlePasswd: '',
+                },
             ];
             await chrome.storage.local.set({ siteList });
         }
@@ -44,10 +83,32 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
             chrome.storage.local.get(['siteList'], async (siteList) => {
                 let list = siteList.siteList;
                 if (list) {
-                    list.push(data);
+                    if (list.some((i) => i?.id === data.id)) {
+                        list.forEach((item, index) => {
+                            if (item.id === data.id) {
+                                list.splice(index, 1, data);
+                            }
+                        });
+                    } else {
+                        list.push(data);
+                    }
                 } else {
-                    list = [];
+                    list = [data];
                 }
+                chrome.storage.local.set({ siteList: list }, async () => {
+                    callback('success');
+                    return true;
+                });
+
+                return true;
+            });
+
+            return true;
+
+        case 'delSiteList':
+            chrome.storage.local.get(['siteList'], async (siteList) => {
+                let list = siteList.siteList;
+                list = list.filter((sit) => sit.site !== data.site);
                 chrome.storage.local.set({ siteList: list }, async () => {
                     callback('success');
                     return true;

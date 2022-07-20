@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { h, ref } from 'vue';
+import { h, ref, renderSlot } from 'vue';
 import Layout from '@/layout/Layout.vue';
-import { FormInst, NButton } from 'naive-ui';
+import { FormInst, NButton, NSwitch } from 'naive-ui';
 document.title = '设置';
 const columns = [
     {
@@ -22,6 +22,14 @@ const columns = [
         title: '显示标记',
         key: 'badgeBool',
         align: 'center',
+        render: (row: Partial<ModelType>) => {
+            return h(NSwitch, {
+                value: row.badgeBool,
+                checkedValue: true,
+                uncheckedValue: false,
+                disabled: true,
+            });
+        },
     },
     {
         title: '标记文字',
@@ -37,6 +45,14 @@ const columns = [
         title: '显示边框',
         key: 'boxBool',
         align: 'center',
+        render: (row: Partial<ModelType>) => {
+            return h(NSwitch, {
+                value: row.boxBool,
+                checkedValue: true,
+                uncheckedValue: false,
+                disabled: true,
+            });
+        },
     },
     {
         title: '边框颜色',
@@ -47,28 +63,54 @@ const columns = [
         title: '是否自动填充',
         key: 'fillBool',
         align: 'center',
+        render: (row: Partial<ModelType>) => {
+            return h(NSwitch, {
+                value: row.fillBool,
+                checkedValue: true,
+                uncheckedValue: false,
+                disabled: true,
+            });
+        },
     },
     {
         title: '用户名',
         key: 'fillAccount',
         align: 'center',
     },
-    {
-        title: '密码',
-        key: 'fillPasswd',
-        align: 'center',
-    },
+    // {
+    //     title: '密码',
+    //     key: 'fillPasswd',
+    //     align: 'center',
+    // },
     {
         title: '操作',
         key: 'operate',
         align: 'center',
-        render: (row: any) => {
+        render: (row: ModelType) => {
             return [
                 h(
                     NButton,
                     {
                         size: 'small',
-                        onClick: () => {},
+                        onClick: () => {
+                            addOrEdit.value = 'edit';
+                            model.value = {
+                                id: row.id,
+                                site: row.site,
+                                badgeBool: row.badgeBool,
+                                badgeText: row.badgeText,
+                                badgeColor: row.badgeColor,
+                                boxBool: row.boxBool,
+                                boxColor: row.boxColor,
+                                fillBool: row.fillBool,
+                                fillAccount: row.fillAccount,
+                                fillPasswd: row.fillPasswd,
+                                handleBool: row.handleBool,
+                                handleAccount: row.handleAccount,
+                                handlePasswd: row.handlePasswd,
+                            };
+                            showModal.value = true;
+                        },
                     },
                     { default: () => '编辑' }
                 ),
@@ -77,7 +119,14 @@ const columns = [
                     {
                         size: 'small',
                         style: { color: 'red', marginLeft: '20px' },
-                        onClick: () => {},
+                        onClick: () => {
+                            chrome.runtime.sendMessage({ event: 'delSiteList', data: row }, async (response) => {
+                                if (response) {
+                                    // message.success('删除成功');
+                                    getSiteList();
+                                }
+                            });
+                        },
                     },
                     { default: () => '删除' }
                 ),
@@ -87,39 +136,95 @@ const columns = [
 ];
 
 const dataList = ref([]);
-const showModal = ref(false);
+let showModal = ref(false);
 const addOrEdit = ref('new');
 const formRef = ref<FormInst | null>(null);
-
+type ModelType = {
+    id: number; //id
+    site: string; //网址
+    badgeBool: boolean; //显示标记
+    badgeText: string; //标记文字
+    badgeColor: string; //标记颜色
+    boxBool: boolean; //显示边框
+    boxColor: string; //边框颜色
+    fillBool: boolean; //自动填充
+    fillAccount: string; //填充用的用户名
+    fillPasswd: string; //填充用的密码
+    handleBool: boolean; //是否手动修正选择器
+    handleAccount: string; //用户名选择器
+    handlePasswd: string; //密码选择器
+};
 // const message = useMessage();
-const model = ref({
-    site: 'www.baidu.com',
+let model = ref<ModelType>({
+    id: Date.now(),
+    site: '',
     badgeBool: true,
-    badgeText: '百度',
+    badgeText: '',
     badgeColor: '#18A058',
     boxBool: true,
     boxColor: '#18A058',
     fillBool: true,
-    fillAccount: 'aaaaaa',
-    fillPasswd: '111111',
+    fillAccount: '',
+    fillPasswd: '',
     handleBool: false,
-    handleAccount: 'aaaasss',
-    handlePasswd: '112333',
+    handleAccount: '',
+    handlePasswd: '',
 });
 const submitCallback = (e: MouseEvent) => {
     formRef.value?.validate((error) => {
         if (!error) {
-            chrome.runtime.sendMessage({ event: 'setSiteList', data: model.value }, async (response) => {
-                if (response) {
-                    // message.success('添加成功');
-                    showModal.value = false;
-                    getSiteList();
+            chrome.runtime.sendMessage(
+                {
+                    event: 'setSiteList',
+                    data: {
+                        id: model.value.id,
+                        site: model.value.site.trim(),
+                        badgeBool: model.value.badgeBool,
+                        badgeText: model.value.badgeText.trim(),
+                        badgeColor: model.value.badgeColor.trim(),
+                        boxBool: model.value.boxBool,
+                        boxColor: model.value.boxColor.trim(),
+                        fillBool: model.value.fillBool,
+                        fillAccount: model.value.fillAccount.trim(),
+                        fillPasswd: model.value.fillPasswd,
+                        handleBool: model.value.handleBool,
+                        handleAccount: model.value.handleAccount.trim(),
+                        handlePasswd: model.value.handlePasswd.trim(),
+                    },
+                },
+                async (response) => {
+                    if (response) {
+                        // message.success('添加成功');
+                        addOrEdit.value = 'new';
+                        showModal.value = false;
+                        getSiteList();
+                    }
                 }
-            });
+            );
         }
     });
 };
-
+const modalCloseCallback = () => {
+    showModal.value = false;
+};
+const addSiteCallback = () => {
+    model.value = {
+        id: Date.now(),
+        site: '',
+        badgeBool: true,
+        badgeText: '',
+        badgeColor: '#18A058',
+        boxBool: true,
+        boxColor: '#18A058',
+        fillBool: true,
+        fillAccount: '',
+        fillPasswd: '',
+        handleBool: false,
+        handleAccount: '',
+        handlePasswd: '',
+    };
+    showModal.value = true;
+};
 const rules = {};
 const getSiteList = () => {
     chrome.runtime.sendMessage({ event: 'getSiteList', data: null }, async (data) => {
@@ -134,7 +239,7 @@ getSiteList();
 <template>
     <Layout>
         <div class="jh-wang-setting-box">
-            <n-button class="add" style="margin-bottom: 20px" type="primary" size="small" @click="showModal = true">添加</n-button>
+            <n-button class="add" style="margin-bottom: 20px" type="primary" size="small" @click="addSiteCallback">添加</n-button>
             <n-data-table :columns="columns" :data="dataList" :paginate-single-page="false" />
         </div>
         <n-modal
@@ -148,7 +253,7 @@ getSiteList();
             aria-modal="true"
             :show-icon="false"
             @positive-click="submitCallback"
-            @negative-click="showModal = false"
+            @negative-click="modalCloseCallback"
         >
             <n-card class="jh-wang-setting-add" style="height: 780px; overflow: hidden; overflow-y: auto">
                 <n-form ref="formRef" :model="model" :rules="rules" size="small" label-placement="top">
