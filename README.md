@@ -55,6 +55,8 @@ console.log(obj);
 ```shell
 git clone https://github.com/1163895390wjh/chrome-extension-vite.git
 
+#或者国内源
+git clone https://gitee.com/mr-jinhui/chrome-extension-vite.git
 npm install -g pnpm
 
 pnpm install
