@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import App from './components/Setting.vue';
+import App from './App.vue';
 import '../styles/style.css';
 import './setting.css';
 // import NaiveUi from 'naive-ui';

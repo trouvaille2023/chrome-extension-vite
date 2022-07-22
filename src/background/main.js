@@ -108,11 +108,16 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
         case 'delSiteList':
             chrome.storage.local.get(['siteList'], async (siteList) => {
                 let list = siteList.siteList;
-                list = list.filter((sit) => sit.site !== data.site);
-                chrome.storage.local.set({ siteList: list }, async () => {
-                    callback('success');
+                if (data.site) {
+                    list = list.filter((sit) => sit.site !== data.site);
+                    chrome.storage.local.set({ siteList: list }, async () => {
+                        callback('success');
+                        return true;
+                    });
+                } else {
+                    callback('fail');
                     return true;
-                });
+                }
 
                 return true;
             });

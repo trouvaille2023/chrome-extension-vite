@@ -7,7 +7,7 @@ setInterval(() => {
     dataTime.value = Date.now();
 }, 500);
 const showAbout = () => {
-    alert(`About me...<br>About me...`);
+    alert(`About me...  About me...`);
 };
 
 const showSetting = () => {
