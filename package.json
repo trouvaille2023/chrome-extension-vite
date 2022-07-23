@@ -1,14 +1,13 @@
 {
   "name": "martin-extension",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "scripts": {
     "dev": "sh shell/build.sh && BUILD_ENV=development vite build --watch",
     "debug": "npx --node-arg=--inspect-brk vite build --watch",
     "build": "sh shell/build.sh && vite build",
     "serve": "vite preview",
-    "zip": "sh shell/zip.sh",
     "preview": "vite preview",
     "eslint": "eslint -ext .js, .jsx, .ts, .tsx, .vue src",
     "lint": "lint-staged",
