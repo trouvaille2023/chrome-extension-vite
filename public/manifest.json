@@ -9,7 +9,8 @@
     "cookies",
     "notifications",
     "declarativeContent",
-    "scripting"
+    "scripting",
+    "contextMenus"
   ],
   "background": {
     "service_worker": "background.js",

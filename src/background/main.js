@@ -104,7 +104,6 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
             });
 
             return true;
-
         case 'delSiteList':
             chrome.storage.local.get(['siteList'], async (siteList) => {
                 let list = siteList.siteList;
@@ -135,6 +134,9 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
                 return true;
             });
             return true;
+        case 'onlyAutoFill':
+            // createContextMenus();
+            return true;
     }
     return true;
 });
@@ -144,3 +146,34 @@ function initHandle(_, sendResponse) {
     initData();
     sendResponse();
 }
+
+try {
+    chrome.contextMenus.create(
+        {
+            type: 'normal',
+            title: '就是个彩蛋🥚🥚🥚',
+            id: 'fillAccountAndPassword',
+            contexts: ['all'],
+        },
+        (e) => {}
+    );
+} catch (e) {}
+
+// chrome.contextMenus.create(
+//     {
+//         type: 'normal',
+//         title: '立即填充用户名和密码',
+//         id: 'fillAccountAndPassword',
+//         contexts: ['all'],
+//     },
+//     (e) => {}
+// );
+//
+// console.log(chrome.contextMenus);
+//
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    // debugger;
+    // chrome.runtime.sendMessage({ event: 'easterEgg' }, () => {
+    //     return true;
+    // });
+});

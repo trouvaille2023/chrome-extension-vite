@@ -5,6 +5,7 @@ export async function injectBox() {
                 generateBox({ siteList: data.siteList });
             }
         });
+        await getContextMenuListener();
     } catch (e) {
         console.info('插件报错，不用管', e);
     }
@@ -142,3 +143,17 @@ type ModelType = {
     handleAccount: string; //用户名选择器
     handlePasswd: string; //密码选择器
 };
+
+/**
+ * 判断右键时是否激活自动填充菜单
+ */
+async function getContextMenuListener() {
+    await chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback) {
+        switch (event) {
+            case 'easterEgg':
+                alert('💐💐💐💐💐💐');
+                break;
+        }
+        return true;
+    });
+}
