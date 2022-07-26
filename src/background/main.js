@@ -14,7 +14,7 @@
 //     handlePasswd: string, //密码选择器
 // };
 function initData() {
-    console.log('====-->', 'initData');
+    // console.log('====-->', 'initData');
 
     chrome.storage.local.get(['siteList'], async (result) => {
         if (!Object.values(result).length) {
@@ -134,30 +134,27 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
                 return true;
             });
             return true;
-        case 'onlyAutoFill':
-            // createContextMenus();
-            return true;
     }
     return true;
 });
 
 function initHandle(_, sendResponse) {
-    console.log('初始化数据');
+    // console.log('初始化数据');
     initData();
     sendResponse();
 }
 
-try {
-    chrome.contextMenus.create(
-        {
-            type: 'normal',
-            title: '就是个彩蛋🥚🥚🥚',
-            id: 'fillAccountAndPassword',
-            contexts: ['all'],
-        },
-        (e) => {}
-    );
-} catch (e) {}
+// try {
+//     chrome.contextMenus.create(
+//         {
+//             type: 'normal',
+//             title: '就是个彩蛋🥚🥚🥚',
+//             id: 'fillAccountAndPassword',
+//             contexts: ['all'],
+//         },
+//         (e) => {}
+//     );
+// } catch (e) {}
 
 // chrome.contextMenus.create(
 //     {
@@ -171,9 +168,9 @@ try {
 //
 // console.log(chrome.contextMenus);
 //
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-    // debugger;
-    // chrome.runtime.sendMessage({ event: 'easterEgg' }, () => {
-    //     return true;
-    // });
-});
+// chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+// debugger;
+// chrome.runtime.sendMessage({ event: 'easterEgg' }, () => {
+//     return true;
+// });
+// });
