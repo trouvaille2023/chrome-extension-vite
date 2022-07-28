@@ -16,6 +16,9 @@ export async function injectBox() {
  * @param siteObj
  */
 function autoCompleteLogin(siteObj: ModelType): void {
+    if (siteObj.port === undefined || siteObj.port === null) {
+        siteObj.port = '';
+    }
     if (siteObj.site === location.hostname && siteObj.port === location.port && /\/login/gi.test(location.pathname)) {
         let username: Exclude<Element, null> & { value: string } = document.querySelector('input[name="username"]') as Element & { value: string };
         let password: Exclude<Element, null> & { value: string } = document.querySelector('input[name="password"]') as Element & { value: string };

@@ -289,25 +289,26 @@ let siteValue = ref<ModelType>({
 const submitCallback = (e: MouseEvent) => {
     formRef.value
         ?.validate((error) => {
-            if (!error && siteValue.value.site.trim()) {
+            if (!error && siteValue.value.site) {
+                debugger;
                 chrome.runtime.sendMessage(
                     {
                         event: 'setSiteList',
                         data: {
                             id: siteValue.value.id,
-                            site: siteValue.value.site.trim(),
-                            port: siteValue.value.port.trim(),
+                            site: siteValue.value.site?.trim(),
+                            port: !siteValue.value.port ? '' : siteValue.value.port.trim(),
                             badgeBool: siteValue.value.badgeBool,
                             badgeText: siteValue.value.badgeText.trim(),
                             badgeColor: siteValue.value.badgeColor.trim(),
                             boxBool: siteValue.value.boxBool,
                             boxColor: siteValue.value.boxColor.trim(),
                             fillBool: siteValue.value.fillBool,
-                            fillAccount: siteValue.value.fillAccount.trim(),
+                            fillAccount: siteValue.value.fillAccount?.trim(),
                             fillPasswd: siteValue.value.fillPasswd,
                             handleBool: siteValue.value.handleBool,
-                            handleAccount: siteValue.value.handleAccount.trim(),
-                            handlePasswd: siteValue.value.handlePasswd.trim(),
+                            handleAccount: siteValue.value.handleAccount?.trim(),
+                            handlePasswd: siteValue.value.handlePasswd?.trim(),
                         },
                     },
                     async (response) => {
