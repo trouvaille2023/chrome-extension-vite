@@ -5,7 +5,7 @@ DIR=$(pwd)
 cd ..
 echo $(pwd)
 #
-rm -rf zips/*
+#rm -rf zips/*
 PACKAGE_VERSION=$(cat package.json \
   | grep version \
   | head -1 \
@@ -24,3 +24,5 @@ npm run build
 cd output
 
 zip -r -D $zipPath *
+
+git add $zipPath

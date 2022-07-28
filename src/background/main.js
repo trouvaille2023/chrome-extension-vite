@@ -23,6 +23,7 @@ function initData() {
                 {
                     id: Date.now(),
                     site: 'localhost',
+                    port: '',
                     badgeBool: true,
                     badgeText: '本地',
                     badgeColor: '#18A058',
@@ -38,6 +39,7 @@ function initData() {
                 {
                     id: Date.now() + 1000,
                     site: '127.0.0.1',
+                    port: '',
                     badgeBool: true,
                     badgeText: '本地',
                     badgeColor: '#18A058',

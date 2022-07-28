@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { h, ref } from 'vue';
-import { FormInst, NButton, NSwitch, useDialog, useMessage } from 'naive-ui';
+import { createVNode, h, ref } from 'vue';
+import { FormInst, NButton, NSwitch, NTag, useDialog, useMessage } from 'naive-ui';
 
 document.title = '设置';
 const dialog = useDialog();
@@ -23,57 +23,175 @@ const columns = [
         width: 200,
     },
     {
+        title: '端口',
+        key: 'port',
+        align: 'center',
+        width: 80,
+        render(row: ModelType) {
+            return row.port
+                ? h(
+                      NTag,
+                      {
+                          // type: 'info',
+                          bordered: true,
+                      },
+                      {
+                          default: () => row.port,
+                      }
+                  )
+                : '--';
+        },
+    },
+    {
         title: '显示标记',
         key: 'badgeBool',
         align: 'center',
         render: (row: Partial<ModelType>) => {
-            return h(NSwitch, {
-                value: row.badgeBool,
-                checkedValue: true,
-                uncheckedValue: false,
-                disabled: true,
-            });
+            return h(
+                NSwitch,
+                {
+                    value: row.badgeBool,
+                    checkedValue: true,
+                    uncheckedValue: false,
+                    disabled: true,
+                },
+                { checked: '显示', unchecked: '隐藏' }
+            );
         },
     },
     {
         title: '标记文字',
         key: 'badgeText',
         align: 'center',
+        render(row: ModelType) {
+            return row.badgeText
+                ? h(
+                      NTag,
+                      {
+                          // type: 'info',
+                          bordered: true,
+                      },
+                      {
+                          default: () => row.badgeText,
+                      }
+                  )
+                : '--';
+        },
     },
     {
         title: '标记颜色',
         key: 'badgeColor',
         align: 'center',
+        render(row: ModelType) {
+            return row.badgeColor && row.badgeBool
+                ? h('div', {}, [
+                      h(
+                          'span',
+                          {
+                              style: {
+                                  background: row.badgeColor,
+                                  height: '16px',
+                                  width: '16px',
+                                  display: 'inline-block',
+                                  verticalAlign: 'middle',
+                              },
+                          },
+                          {
+                              default: () => '',
+                          }
+                      ),
+                      h(
+                          'span',
+                          {
+                              style: {
+                                  verticalAlign: 'middle',
+                                  display: 'inline-block',
+                                  marginLeft: '6px',
+                                  minWidth: '82px',
+                                  textAlign: 'left',
+                              },
+                          },
+                          {
+                              default: () => row.badgeColor,
+                          }
+                      ),
+                  ])
+                : '--';
+        },
     },
     {
         title: '显示边框',
         key: 'boxBool',
         align: 'center',
         render: (row: Partial<ModelType>) => {
-            return h(NSwitch, {
-                value: row.boxBool,
-                checkedValue: true,
-                uncheckedValue: false,
-                disabled: true,
-            });
+            return h(
+                NSwitch,
+                {
+                    value: row.boxBool,
+                    checkedValue: true,
+                    uncheckedValue: false,
+                    disabled: true,
+                },
+                { checked: '显示', unchecked: '隐藏' }
+            );
         },
     },
     {
         title: '边框颜色',
         key: 'boxColor',
         align: 'center',
+        render(row: ModelType) {
+            return row.boxColor && row.boxBool
+                ? h('div', {}, [
+                      h(
+                          'span',
+                          {
+                              style: {
+                                  background: row.boxColor,
+                                  height: '16px',
+                                  width: '16px',
+                                  display: 'inline-block',
+                                  verticalAlign: 'middle',
+                              },
+                          },
+                          {
+                              default: () => '',
+                          }
+                      ),
+                      h(
+                          'span',
+                          {
+                              style: {
+                                  verticalAlign: 'middle',
+                                  display: 'inline-block',
+                                  marginLeft: '6px',
+                                  minWidth: '82px',
+                                  textAlign: 'left',
+                              },
+                          },
+                          {
+                              default: () => row.boxColor,
+                          }
+                      ),
+                  ])
+                : '--';
+        },
     },
     {
         title: '是否自动填充',
         key: 'fillBool',
         align: 'center',
         render: (row: Partial<ModelType>) => {
-            return h(NSwitch, {
-                value: row.fillBool,
-                checkedValue: true,
-                uncheckedValue: false,
-                disabled: true,
-            });
+            return h(
+                NSwitch,
+                {
+                    value: row.fillBool,
+                    checkedValue: true,
+                    uncheckedValue: false,
+                    disabled: true,
+                },
+                { checked: '填充', unchecked: '置空' }
+            );
         },
     },
     {
@@ -96,6 +214,7 @@ const columns = [
                             siteValue.value = {
                                 id: row.id,
                                 site: row.site,
+                                port: row.port,
                                 badgeBool: row.badgeBool,
                                 badgeText: row.badgeText,
                                 badgeColor: row.badgeColor,
@@ -137,6 +256,7 @@ const formRef = ref<FormInst | null>(null);
 type ModelType = {
     id: number; //id
     site: string; //网址
+    port: string; //端口
     badgeBool: boolean; //显示标记
     badgeText: string; //标记文字
     badgeColor: string; //标记颜色
@@ -153,6 +273,7 @@ const message = useMessage();
 let siteValue = ref<ModelType>({
     id: Date.now(),
     site: '',
+    port: '',
     badgeBool: true,
     badgeText: '',
     badgeColor: '#18A058',
@@ -175,6 +296,7 @@ const submitCallback = (e: MouseEvent) => {
                         data: {
                             id: siteValue.value.id,
                             site: siteValue.value.site.trim(),
+                            port: siteValue.value.port.trim(),
                             badgeBool: siteValue.value.badgeBool,
                             badgeText: siteValue.value.badgeText.trim(),
                             badgeColor: siteValue.value.badgeColor.trim(),
@@ -211,6 +333,7 @@ const addSiteCallback = () => {
     siteValue.value = {
         id: Date.now(),
         site: '',
+        port: '',
         badgeBool: true,
         badgeText: '',
         badgeColor: '#18A058',
@@ -281,6 +404,9 @@ getSiteList();
             <n-form ref="formRef" :model="siteValue" :rules="rules" size="small" label-placement="top">
                 <n-form-item label="域名" path="site">
                     <n-input v-model:value="siteValue.site" placeholder="请填写域名，如：www.baidu.com" />
+                </n-form-item>
+                <n-form-item label="端口">
+                    <n-input v-model:value="siteValue.port" placeholder="请填写端口，80端口可为空，如：8888" />
                 </n-form-item>
                 <n-form-item label="显示标记">
                     <n-switch v-model:value="siteValue.badgeBool">

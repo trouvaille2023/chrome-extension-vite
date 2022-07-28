@@ -16,7 +16,7 @@ export async function injectBox() {
  * @param siteObj
  */
 function autoCompleteLogin(siteObj: ModelType): void {
-    if (siteObj.site === location.hostname && /\/login/gi.test(location.pathname)) {
+    if (siteObj.site === location.hostname && siteObj.port === location.port && /\/login/gi.test(location.pathname)) {
         let username: Exclude<Element, null> & { value: string } = document.querySelector('input[name="username"]') as Element & { value: string };
         let password: Exclude<Element, null> & { value: string } = document.querySelector('input[name="password"]') as Element & { value: string };
         //如果需要手动修正元素选择器
@@ -131,6 +131,7 @@ function generateBox({ siteList }: { siteList: ModelType[] }) {
 type ModelType = {
     id: number; //id
     site: string; //网址
+    port: string; //网址
     badgeBool: boolean; //显示标记
     badgeText: string; //标记文字
     badgeColor: string; //标记颜色
