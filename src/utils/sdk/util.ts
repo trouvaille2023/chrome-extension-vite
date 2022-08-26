@@ -23,6 +23,7 @@ export function cj() {
 
 /**
  * 移除CSDN的禁止复制功能
+ * 展开CSDN折叠的代码
  */
 export function removeUserSelectEvent() {
     try {
@@ -33,6 +34,9 @@ export function removeUserSelectEvent() {
             [...(document.querySelectorAll('#content_views pre code') as any)].forEach((el) => {
                 el.style.userSelect = 'unset';
             });
+            setTimeout(() => {
+                [...(document.querySelectorAll('.look-more-preCode') as any)].map((i) => i.click());
+            }, 3000);
         }
     } catch (e) {
         console.info('插件报错，不用管', e);
