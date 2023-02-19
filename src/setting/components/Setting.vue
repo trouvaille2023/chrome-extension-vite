@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createVNode, h, ref } from 'vue';
+import { h, nextTick, ref } from 'vue';
 import { FormInst, NButton, NSwitch, NTag, useDialog, useMessage } from 'naive-ui';
 
 document.title = '设置';
@@ -290,7 +290,6 @@ const submitCallback = (e: MouseEvent) => {
     formRef.value
         ?.validate((error) => {
             if (!error && siteValue.value.site) {
-                debugger;
                 chrome.runtime.sendMessage(
                     {
                         event: 'setSiteList',
@@ -356,10 +355,10 @@ const rules = {
 };
 const getSiteList = () => {
     chrome.runtime.sendMessage({ event: 'getSiteList', data: null }, async (data) => {
-        if (data && data?.siteList.length) {
-            console.log(data.siteList);
-            dataList.value = data?.siteList;
-        }
+        // if (data && data?.siteList.length) {
+        //     console.log(data.siteList);
+        dataList.value = data?.siteList || [];
+        // }
     });
 };
 
@@ -379,6 +378,31 @@ const cancelDelCallback = () => {
     showDelModal.value = false;
 };
 
+const importFromLocal = () => {
+    try {
+        let input = document.createElement('input');
+        input.type = 'file';
+        input.click();
+        input.onchange = async (event: any) => {
+            const file = event.target.files[0] as File;
+            const txt = await file.text();
+            const list = JSON.parse(txt);
+            chrome.runtime.sendMessage(
+                {
+                    event: 'importSiteList',
+                    data: list,
+                },
+                async (response) => {
+                    if (response) {
+                        message.success('添加成功');
+                        getSiteList();
+
+                    }
+                }
+            );
+        };
+    } catch (e) {}
+};
 getSiteList();
 </script>
 
@@ -386,6 +410,9 @@ getSiteList();
     <!--    <Layout>-->
     <div class="jh-wang-setting-box">
         <n-button class="add" style="margin-bottom: 20px" type="primary" size="small" @click="addSiteCallback">添加</n-button>
+        <n-button class="add" style="margin-bottom: 20px; margin-left: 10px" type="plain" size="small" id="import" @click="importFromLocal"
+            >从本地导入
+        </n-button>
         <n-data-table :columns="columns" :data="dataList" :paginate-single-page="false" />
     </div>
     <n-modal
@@ -480,8 +507,11 @@ getSiteList();
         content="确认要删除这条记录吗？🤔"
         positive-text="确认"
         negative-text="放弃"
+        :auto-focus="false"
+        :mask-closable="false"
         @positive-click="submitDelCallback"
         @negative-click="cancelDelCallback"
+        v-on:keyup.enter.native="submitDelCallback"
     />
     <!--    </Layout>-->
 </template>

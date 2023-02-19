@@ -36,7 +36,7 @@ export function removeUserSelectEvent() {
             });
             setTimeout(() => {
                 [...(document.querySelectorAll('.look-more-preCode') as any)].map((i) => i.click());
-            }, 3000);
+            }, 1500);
         }
     } catch (e) {
         console.info('插件报错，不用管', e);

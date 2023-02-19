@@ -13,55 +13,39 @@
 //     handleAccount: string, //用户名选择器
 //     handlePasswd: string, //密码选择器
 // };
-function initData() {
+function initData(list) {
     // console.log('====-->', 'initData');
 
     chrome.storage.local.get(['siteList'], async (result) => {
-        if (!Object.values(result).length) {
-            console.count('siteList');
-            let siteList = [
-                {
-                    id: Date.now(),
-                    site: 'localhost',
-                    port: '',
-                    badgeBool: true,
-                    badgeText: '本地',
-                    badgeColor: '#18A058',
-                    boxBool: true,
-                    boxColor: '#18A058',
-                    fillBool: true,
-                    fillAccount: '13800138000',
-                    fillPasswd: '123456',
-                    handleBool: false,
-                    handleAccount: '',
-                    handlePasswd: '',
-                },
-                {
-                    id: Date.now() + 1000,
-                    site: '127.0.0.1',
-                    port: '',
-                    badgeBool: true,
-                    badgeText: '本地',
-                    badgeColor: '#18A058',
-                    boxBool: true,
-                    boxColor: '#18A058',
-                    fillBool: true,
-                    fillAccount: '13800138000',
-                    fillPasswd: '123456',
-                    handleBool: false,
-                    handleAccount: '',
-                    handlePasswd: '',
-                },
-            ];
-            await chrome.storage.local.set({ siteList });
+        // if (Object.values(result).length) {
+        //     console.count('siteList');
+        //     let siteList = [];
+        //     await chrome.storage.local.set({ siteList });
+        // }
+        if (result?.siteList) {
+            let newList = [...result.siteList, ...list].reverse();
+            newList = newList.reduce((pre, cur) => {
+                if (!pre.some((i) => i.site === cur.site && i?.port === cur?.port)) {
+                    pre.push({ ...cur, id: Date.now() + Math.random() * 10000 });
+                }
+                return pre;
+            }, []);
+            await chrome.storage.local.set({ siteList: newList });
+        } else {
+            await chrome.storage.local.set({
+                siteList: list.map((i) => {
+                    return { ...i, id: Date.now() + Math.random() * 10000 };
+                }),
+            });
         }
+        return true;
     });
 }
 
 chrome.runtime.onInstalled.addListener(function (object) {
     if (object.reason === 'install') {
         console.log('====', 'Installed');
-        initData();
+        initData([]);
     }
 });
 
@@ -109,8 +93,8 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
         case 'delSiteList':
             chrome.storage.local.get(['siteList'], async (siteList) => {
                 let list = siteList.siteList;
-                if (data.site) {
-                    list = list.filter((sit) => sit.site !== data.site);
+                if (data.id) {
+                    list = list.filter((sit) => sit.id !== data.id);
                     chrome.storage.local.set({ siteList: list }, async () => {
                         callback('success');
                         return true;
@@ -136,13 +120,17 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
                 return true;
             });
             return true;
+        case 'importSiteList':
+            initData(data);
+            callback(true);
+            return true;
     }
     return true;
 });
 
 function initHandle(_, sendResponse) {
     // console.log('初始化数据');
-    initData();
+    initData([]);
     sendResponse();
 }
 

@@ -1,0 +1,34 @@
+[
+    {
+        "badgeBool": false,
+        "badgeColor": "#18A058",
+        "badgeText": "本地",
+        "boxBool": false,
+        "boxColor": "#18A058",
+        "fillAccount": "13800138000",
+        "fillBool": true,
+        "fillPasswd": "123456",
+        "handleAccount": "",
+        "handleBool": false,
+        "handlePasswd": "",
+        "id": 1658730483382,
+        "port": "1025",
+        "site": "127.0.0.1"
+    },
+    {
+        "badgeBool": true,
+        "badgeColor": "#EA0B0BD4",
+        "badgeText": "PRO",
+        "boxBool": true,
+        "boxColor": "#EA0B0BD4",
+        "fillAccount": "13800138000",
+        "fillBool": true,
+        "fillPasswd": "123456",
+        "handleAccount": "",
+        "handleBool": false,
+        "handlePasswd": "",
+        "id": 1658297188445,
+        "port": "1024",
+        "site": "localhost"
+    }
+]
