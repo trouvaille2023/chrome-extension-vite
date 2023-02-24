@@ -25,20 +25,46 @@ export function cj() {
  * 移除CSDN的禁止复制功能
  * 展开CSDN折叠的代码
  */
-export function removeUserSelectEvent() {
+export async function removeUserSelectEvent() {
     try {
-        if (window.location.hostname === 'blog.csdn.net') {
-            [...(document.querySelectorAll('#content_views pre') as any)].forEach((el) => {
-                el.style.userSelect = 'unset';
-            });
-            [...(document.querySelectorAll('#content_views pre code') as any)].forEach((el) => {
-                el.style.userSelect = 'unset';
-            });
-            setTimeout(() => {
-                [...(document.querySelectorAll('.look-more-preCode') as any)].map((i) => i.click());
-            }, 1500);
+        if (window.location.hostname.indexOf('blog.csdn.net') > -1) {
+            for (let i = 0; i < 50; i++) {
+                [...(document.querySelectorAll('#content_views pre code') as any)].forEach((el) => {
+                    el.style.userSelect = 'unset';
+                });
+                await sleep(100);
+            }
         }
     } catch (e) {
         console.info('插件报错，不用管', e);
     }
+}
+
+/**
+ * 移除CSDN的禁止复制功能
+ * 展开CSDN折叠的代码
+ */
+export async function closeLoginModalEvent() {
+    try {
+        if (window.location.hostname.indexOf('zhihu.com') > -1) {
+            for (let i = 0; i < 30; i++) {
+                const ele = document.querySelector('div.Modal.Modal--default.signFlowModal > button.Modal-closeButton');
+                if (ele instanceof HTMLButtonElement) {
+                    ele.click();
+                    return;
+                }
+                await sleep(100);
+            }
+        }
+    } catch (e) {
+        console.info('插件报错，不用管', e);
+    }
+}
+
+export async function sleep(ms: number) {
+    return new Promise<void>((resove) => {
+        setTimeout(() => {
+            resove();
+        }, ms);
+    });
 }
