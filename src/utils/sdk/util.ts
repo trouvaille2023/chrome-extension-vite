@@ -28,10 +28,14 @@ export function cj() {
 export async function removeUserSelectEvent() {
     try {
         if (window.location.hostname.indexOf('blog.csdn.net') > -1) {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 100; i++) {
+                [...(document.querySelectorAll('#content_views pre') as any)].forEach((el) => {
+                    el.style.userSelect = 'unset';
+                });
                 [...(document.querySelectorAll('#content_views pre code') as any)].forEach((el) => {
                     el.style.userSelect = 'unset';
                 });
+                [...(document.querySelectorAll('.look-more-preCode') as any)].map((i) => i.click());
                 await sleep(100);
             }
         }
