@@ -2,7 +2,8 @@
 
 源库：https://github.com/1163895390wjh/chrome-extension-vite
 
-国内镜像库 https://gitee.com/mr-jinhui/chrome-extension-vite
+国内镜像库 https://gitee.com/mr-jinhui/chrome-extension-vite (备注：由于仓库同步时无法同步release，请使用国内镜像库的用户自行从代码中的zips目录下载已编译好的最新版本的插件。)
+    
 
 ### 计划的功能列表
 
@@ -15,6 +16,10 @@
   - 标记文本需要能自行修改[✅]
   - 网址需不需要自动填充用户名和密码[✅]
 - 给页面注入 JSON 序列化打印方法[✅]
+- 其它实用功能
+  - 自动展开csdn博客页面折叠的代码[✅]
+  - 自动点击知乎页面弹出的登录框的关闭按钮[✅]
+  
 
 ### 已有功能：
 
