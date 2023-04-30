@@ -1,6 +1,6 @@
 ### 仓库地址
 
-源库：https://github.com/1163895390wjh/chrome-extension-vite
+源库：[https://github.com/trouvaille2023/chrome-extension-vite](https://github.com/trouvaille2023/echarts-image-server.git)
 
 国内镜像库 https://gitee.com/mr-jinhui/chrome-extension-vite (备注：由于仓库同步时无法同步release，请使用国内镜像库的用户自行从代码中的zips目录下载已编译好的最新版本的插件。)
     
