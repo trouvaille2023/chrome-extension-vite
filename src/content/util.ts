@@ -155,6 +155,7 @@ async function getContextMenuListener() {
     await chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback) {
         switch (event) {
             case 'easterEgg':
+                console.log(`💐💐💐💐💐💐`);
                 alert('💐💐💐💐💐💐');
                 break;
         }

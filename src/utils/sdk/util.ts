@@ -39,6 +39,12 @@ export async function removeUserSelectEvent() {
                 await sleep(100);
             }
         }
+        for (let i = 0; i < 100; i++) {
+            [...(document.querySelectorAll('*') as any)].forEach((el) => {
+                el.style.userSelect = 'unset';
+            });
+            await sleep(100);
+        }
     } catch (e) {
         console.info('插件报错，不用管', e);
     }

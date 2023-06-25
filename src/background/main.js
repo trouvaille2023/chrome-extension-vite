@@ -134,17 +134,19 @@ function initHandle(_, sendResponse) {
     sendResponse();
 }
 
-// try {
-//     chrome.contextMenus.create(
-//         {
-//             type: 'normal',
-//             title: '就是个彩蛋🥚🥚🥚',
-//             id: 'fillAccountAndPassword',
-//             contexts: ['all'],
-//         },
-//         (e) => {}
-//     );
-// } catch (e) {}
+try {
+    chrome.contextMenus.create(
+        {
+            type: 'normal',
+            title: '就是个彩蛋🥚🥚🥚',
+            id: 'fillAccountAndPassword',
+            contexts: ['all'],
+        },
+        (e) => {
+            console.log(`彩蛋🥚🥚🥚 callback`);
+        }
+    );
+} catch (e) {}
 
 // chrome.contextMenus.create(
 //     {
@@ -159,8 +161,7 @@ function initHandle(_, sendResponse) {
 // console.log(chrome.contextMenus);
 //
 // chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-// debugger;
-// chrome.runtime.sendMessage({ event: 'easterEgg' }, () => {
-//     return true;
-// });
+//     chrome.runtime.sendMessage({ event: 'easterEgg' }, () => {
+//         return true;
+//     });
 // });
