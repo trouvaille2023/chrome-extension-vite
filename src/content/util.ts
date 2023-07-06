@@ -122,7 +122,13 @@ function generateBox({ siteList }: { siteList: ModelType[] }) {
                     ay = y;
                 subHtmlDivElement.style.display = 'unset';
                 setPosition(x, ax, y, ay, subHtmlDivElement);
-                chrome.runtime.sendMessage({ event: 'setFlagHostListPosition', data: { flagHostListPosition: [ax, ay] } }, async (data) => {});
+                chrome.runtime.sendMessage(
+                    {
+                        event: 'setFlagHostListPosition',
+                        data: { flagHostListPosition: [ax, ay] },
+                    },
+                    async (data) => {}
+                );
             };
         }
         // 是否自动填充用户名密码
@@ -131,6 +137,7 @@ function generateBox({ siteList }: { siteList: ModelType[] }) {
         }
     }
 }
+
 type ModelType = {
     id: number; //id
     site: string; //网址
@@ -161,4 +168,83 @@ async function getContextMenuListener() {
         }
         return true;
     });
+}
+
+export function initPageEvent() {
+    chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+        if (message.action === 'performAction') {
+            getGoodsList();
+        }
+        if (message.action === 'toGetGoodsList') {
+            getGoodsList();
+        }
+        if (message.action === 'toGetAllGoodsList') {
+            getAllGoodsList();
+        }
+    });
+}
+
+function getGoodsList() {
+    let formattedDate = getFormattedDate();
+    let shops = [];
+    let goods = document.querySelectorAll(`.goods-list.shop-list > ul > li`) as any;
+    for (let item of goods) {
+        if (item.querySelector('.stall-recommend') && item.querySelector('.stall-recommend').parentElement.querySelector('a').href) {
+            shops.push(item.querySelector('.stall-recommend').parentElement.querySelector('a').href);
+        }
+    }
+    console.clear();
+    console.log(shops.length);
+    let dname = (document.querySelector(`.slzz-stall-head-name a:first-child, .stall-head-name a:first-child h1`) as any).innerText;
+    if (!shops.length) {
+        return alert('没有抓取到商品');
+    }
+    saveFile(shops.join('\n') + '\n', `${formattedDate}-${dname}`);
+}
+
+function getAllGoodsList() {
+    let formattedDate = getFormattedDate();
+    let shops = [];
+    let goods = document.querySelectorAll(`.goods-list.shop-list > ul > li`) as any;
+    for (let item of goods) {
+        shops.push(item.querySelector('a').href);
+    }
+    console.clear();
+    console.log(shops.length);
+    let dname = (document.querySelector(`.slzz-stall-head-name a:first-child, .stall-head-name a:first-child h1`) as any).innerText;
+    if (!shops.length) {
+        return alert('没有抓取到商品');
+    }
+    saveFile(shops.join('\n') + '\n', `${formattedDate}-${dname}`);
+}
+
+function saveFile(data: string, filename: string) {
+    if (!data) {
+        console.error('Console.save: No data');
+        return;
+    }
+
+    if (!filename) filename = `${filename}.txt`;
+
+    if (typeof data === 'object') {
+        data = JSON.stringify(data, undefined, 4);
+    }
+
+    let blob = new Blob([data], { type: 'text/plain' }),
+        e = document.createEvent('MouseEvents'),
+        a = document.createElement('a');
+
+    a.download = filename;
+    a.href = window.URL.createObjectURL(blob);
+    a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    a.dispatchEvent(e);
+}
+
+function getFormattedDate() {
+    let currentDate = new Date();
+    let year = currentDate.getFullYear();
+    let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    let day = currentDate.getDate().toString().padStart(2, '0');
+    return year + '-' + month + '-' + day;
 }

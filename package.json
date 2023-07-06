@@ -1,7 +1,7 @@
 {
   "name": "martin-extension",
   "private": true,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "scripts": {
     "dev": "sh shell/build.sh && BUILD_ENV=development vite build --watch",

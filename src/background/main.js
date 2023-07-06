@@ -124,6 +124,19 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
             initData(data);
             callback(true);
             return true;
+        case 'getGoodsList':
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, { action: 'toGetGoodsList' });
+            });
+            callback(true);
+            return true;
+        case 'getAllGoodsList':
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, { action: 'toGetAllGoodsList' });
+            });
+
+            callback(true);
+            return true;
     }
     return true;
 });
@@ -138,15 +151,29 @@ try {
     chrome.contextMenus.create(
         {
             type: 'normal',
-            title: '就是个彩蛋🥚🥚🥚',
-            id: 'fillAccountAndPassword',
+            title: '抓取主推',
+            id: 'performAction',
             contexts: ['all'],
         },
         (e) => {
             console.log(`彩蛋🥚🥚🥚 callback`);
         }
     );
-} catch (e) {}
+    // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    //     setTimeout(() => {
+    //         chrome.tabs.sendMessage(tabs[0].id, { message: 'Hello from background.js' });
+    //     }, 3000);
+    // });
+
+    // 处理菜单项点击事件
+    chrome.contextMenus.onClicked.addListener(function (info, tab) {
+        if (info.menuItemId === 'performAction') {
+            chrome.tabs.sendMessage(tab.id, { action: 'performAction' });
+        }
+    });
+} catch (e) {
+    console.error(e);
+}
 
 // chrome.contextMenus.create(
 //     {

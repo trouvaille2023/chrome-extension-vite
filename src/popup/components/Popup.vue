@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Layout from '@/layout/Layout.vue';
+// import { getAllGoodsList, getGoodsList } from '@/popup/utils';
 
 let dataTime = ref(Date.now());
 setInterval(() => {
     dataTime.value = Date.now();
 }, 500);
-const showAbout = () => {
-    alert(`About me...  About me...`);
+const getRecommend = () => {
+    chrome.runtime.sendMessage({ event: 'getGoodsList', data: null }, async (data) => {
+        return true;
+    });
+};
+const getAllGoods = () => {
+    chrome.runtime.sendMessage({ event: 'getAllGoodsList', data: null }, async (data) => {
+        return true;
+    });
 };
 
 const showSetting = () => {
@@ -23,7 +31,8 @@ const showSetting = () => {
                 <n-time :time="dataTime" format="hh:mm:ss" class="time" />
             </div>
             <div class="jh-wang-popup-footer">
-                <n-el tag="span" class="jh-wang-about" @click="showAbout">关于</n-el>
+                <n-el tag="span" class="jh-wang-about" @click="getRecommend">抓取主推</n-el>
+                <n-el tag="span" class="jh-wang-about" @click="getAllGoods">抓取所有</n-el>
                 <n-el tag="span" class="jh-wang-popup" @click="showSetting">设置</n-el>
             </div>
         </div>
@@ -53,11 +62,12 @@ const showSetting = () => {
         display: flex;
         justify-content: center;
         align-items: center;
-        column-gap: 36px;
+        column-gap: 20px;
         .jh-wang-about,
         .jh-wang-popup {
             height: 38px;
-            width: 120px;
+            //width: 120px;
+            padding: 0 1em;
             line-height: 38px;
             border-radius: 4px;
             border: 1px solid #2a2a2e;
