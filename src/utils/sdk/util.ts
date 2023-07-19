@@ -27,23 +27,25 @@ export function cj() {
  */
 export async function removeUserSelectEvent() {
     try {
-        if (window.location.hostname.indexOf('blog.csdn.net') > -1) {
+        if (window.location.hostname.indexOf('ibtool.cn') < 0) {
+            if (window.location.hostname.indexOf('blog.csdn.net') > -1) {
+                for (let i = 0; i < 100; i++) {
+                    [...(document.querySelectorAll('#content_views pre') as any)].forEach((el) => {
+                        el.style.userSelect = 'unset';
+                    });
+                    [...(document.querySelectorAll('#content_views pre code') as any)].forEach((el) => {
+                        el.style.userSelect = 'unset';
+                    });
+                    [...(document.querySelectorAll('.look-more-preCode') as any)].map((i) => i.click());
+                    await sleep(100);
+                }
+            }
             for (let i = 0; i < 100; i++) {
-                [...(document.querySelectorAll('#content_views pre') as any)].forEach((el) => {
+                [...(document.querySelectorAll('*') as any)].forEach((el) => {
                     el.style.userSelect = 'unset';
                 });
-                [...(document.querySelectorAll('#content_views pre code') as any)].forEach((el) => {
-                    el.style.userSelect = 'unset';
-                });
-                [...(document.querySelectorAll('.look-more-preCode') as any)].map((i) => i.click());
                 await sleep(100);
             }
-        }
-        for (let i = 0; i < 100; i++) {
-            [...(document.querySelectorAll('*') as any)].forEach((el) => {
-                el.style.userSelect = 'unset';
-            });
-            await sleep(100);
         }
     } catch (e) {
         console.info('插件报错，不用管', e);
