@@ -1,3 +1,5 @@
+import html2canvas from 'html2canvas';
+
 export async function injectBox() {
     try {
         chrome.runtime.sendMessage({ event: 'getSiteList', data: null }, async (data) => {
@@ -173,7 +175,8 @@ async function getContextMenuListener() {
 export function initPageEvent() {
     chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         if (message.action === 'performAction') {
-            getGoodsList();
+            // getGoodsList();
+            loadEditBatch();
         }
         if (message.action === 'toGetGoodsList') {
             getGoodsList();
@@ -247,4 +250,11 @@ function getFormattedDate() {
     let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     let day = currentDate.getDate().toString().padStart(2, '0');
     return year + '-' + month + '-' + day;
+}
+function loadEditBatch() {
+    // @ts-ignore
+    const elems = [...document.querySelectorAll('span[data-btm="d63429"]')];
+    elems.forEach((e) => {
+        e.click();
+    });
 }

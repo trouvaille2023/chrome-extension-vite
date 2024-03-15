@@ -151,7 +151,7 @@ try {
     chrome.contextMenus.create(
         {
             type: 'normal',
-            title: '抓取主推',
+            title: '批量打开编辑',
             id: 'performAction',
             contexts: ['all'],
         },
@@ -159,6 +159,17 @@ try {
             console.log(`彩蛋🥚🥚🥚 callback`);
         }
     );
+    // chrome.contextMenus.create(
+    //     {
+    //         type: 'normal',
+    //         title: 'div->img',
+    //         id: 'imgAction',
+    //         contexts: ['all'],
+    //     },
+    //     (e) => {
+    //         console.log(`彩蛋🥚🥚🥚 callback`);
+    //     }
+    // );
     // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     //     setTimeout(() => {
     //         chrome.tabs.sendMessage(tabs[0].id, { message: 'Hello from background.js' });
@@ -171,6 +182,12 @@ try {
             chrome.tabs.sendMessage(tab.id, { action: 'performAction' });
         }
     });
+    // 处理菜单项点击事件
+    // chrome.contextMenus.onClicked.addListener(function (info, tab) {
+    //     if (info.menuItemId === 'imgAction') {
+    //         chrome.tabs.sendMessage(tab.id, { action: 'imgAction' });
+    //     }
+    // });
 } catch (e) {
     console.error(e);
 }

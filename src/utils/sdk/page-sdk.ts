@@ -1,5 +1,9 @@
-import { cj, cc, removeUserSelectEvent, closeLoginModalEvent } from './util';
+import { cj, cc, removeUserSelectEvent, closeLoginModalEvent, closeAdMask } from './util';
 (window as any).cj = cj || function () {};
 (window as any).cc = cc || function () {};
-removeUserSelectEvent();
-closeLoginModalEvent();
+init();
+function init() {
+    removeUserSelectEvent();
+    closeLoginModalEvent();
+    closeAdMask();
+}

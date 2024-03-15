@@ -73,6 +73,30 @@ export async function closeLoginModalEvent() {
     }
 }
 
+/**
+ * 去除Adblock的遮罩
+ */
+export async function closeAdMask() {
+    try {
+        if (window.location.hostname.indexOf('supercloudsms.com') > -1) {
+            for (let index = 0; index < 50; index++) {
+                try {
+                    const el = document.querySelector('#adb-mask');
+                    if (el) {
+                        el.remove();
+                        return;
+                    }
+                    await sleep(1000);
+                } catch (e) {
+                    console.info('插件报错，不用管', e);
+                }
+            }
+        }
+    } catch (e) {
+        console.info('插件报错，不用管', e);
+    }
+}
+
 export async function sleep(ms: number) {
     return new Promise<void>((resove) => {
         setTimeout(() => {

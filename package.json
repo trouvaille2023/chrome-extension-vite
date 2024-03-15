@@ -1,7 +1,7 @@
 {
   "name": "martin-extension",
   "private": true,
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "scripts": {
     "dev": "sh shell/build.sh && BUILD_ENV=development vite build --watch",
@@ -25,6 +25,7 @@
     ]
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "sass": "^1.53.0",
     "terser": "^5.14.2",
     "vue": "^3.2.37",
