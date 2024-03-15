@@ -1,0 +1,48 @@
+{
+  "name": "Martin",
+  "description": "A Extension for Google Chrome.",
+  "version": "1.0.8",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "tabs",
+    "cookies",
+    "notifications",
+    "declarativeContent",
+    "scripting",
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "host_permissions": ["*://*/*"],
+  "homepage_url": "http://mr-jinhui.gitee.io/martin/",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "action": {
+    "default_title": "Martin",
+    "default_icon": "icon128.png",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icon128.png",
+    "48": "icon128.png",
+    "128": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["sdk.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "commands": {}
+}
