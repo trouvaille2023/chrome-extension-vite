@@ -78,6 +78,34 @@ export async function closeLoginModalEvent() {
  */
 export async function closeAdMask() {
     try {
+        await sleep(500);
+        if (window.location.hostname.indexOf('59ds.com/goodsDetail') > -1 || window.location.hostname.indexOf('96ds.com/goodsDetail') > -1) {
+            try {
+                if (document.querySelector('.edit-spec > div:nth-child(2) > div:nth-child(2)')) {
+                    (document.querySelector('.edit-spec > div:nth-child(2) > div:nth-child(2)') as HTMLDivElement).style.maxHeight = ''
+                }
+            } catch (e) {
+                console.info('插件报错，不用管', e);
+            }
+        }
+    } catch (e) {
+        console.info('插件报错，不用管', e);
+    }
+}
+
+export async function sleep(ms: number) {
+    return new Promise<void>((resove) => {
+        setTimeout(() => {
+            resove();
+        }, ms);
+    });
+}
+
+/**
+ *
+ */
+export async function set96ksheight() {
+    try {
         if (window.location.hostname.indexOf('supercloudsms.com') > -1) {
             for (let index = 0; index < 50; index++) {
                 try {
@@ -95,12 +123,4 @@ export async function closeAdMask() {
     } catch (e) {
         console.info('插件报错，不用管', e);
     }
-}
-
-export async function sleep(ms: number) {
-    return new Promise<void>((resove) => {
-        setTimeout(() => {
-            resove();
-        }, ms);
-    });
 }
