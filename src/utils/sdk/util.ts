@@ -111,11 +111,9 @@ export async function sleep(ms: number) {
 export async function set96ksheight() {
     try {
         await sleep(300);
-        if (window.location.hostname.indexOf('59ds.com/goodsDetail') > -1 || window.location.hostname.indexOf('96ds.com/goodsDetail') > -1) {
+        if (window.location.href.indexOf('59ds.com/goodsDetail') > -1 || window.location.href.indexOf('96ds.com/goodsDetail') > -1) {
             try {
-                if (document.querySelector('.edit-spec > div:nth-child(2) > div:nth-child(2)')) {
-                    (document.querySelector('.edit-spec > div:nth-child(2) > div:nth-child(2)') as HTMLDivElement).style.maxHeight = ''
-                }
+                (document.querySelector('.edit-spec > div:nth-child(2) > div:nth-child(2)') as HTMLDivElement).style.maxHeight = '';
             } catch (e) {
                 console.info('插件报错，不用管', e);
             }
