@@ -110,10 +110,32 @@ export async function sleep(ms: number) {
  */
 export async function set96ksheight() {
     try {
-        await sleep(300);
         if (window.location.href.indexOf('59ds.com/goodsDetail') > -1 || window.location.href.indexOf('96ds.com/goodsDetail') > -1) {
+            await sleep(300);
             try {
                 (document.querySelector('.edit-spec > div:nth-child(2) > div:nth-child(2)') as HTMLDivElement).style.maxHeight = '';
+            } catch (e) {
+                console.info('插件报错，不用管', e);
+            }
+        }
+    } catch (e) {
+        console.info('插件报错，不用管', e);
+    }
+}
+
+/**
+ *
+ */
+export async function setJushuitanCardSize() {
+    try {
+        if (window.location.href.indexOf('scm121.com') > -1) {
+            console.log(6666666);
+            await sleep(5000);
+            try {
+                for (const e of [...(document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container .ant-row > div') as any)]) {
+                    console.log(e.style.width);
+                    e.style.width = '10%';
+                }
             } catch (e) {
                 console.info('插件报错，不用管', e);
             }
