@@ -129,12 +129,15 @@ export async function set96ksheight() {
 export async function setJushuitanCardSize() {
     try {
         if (window.location.href.indexOf('scm121.com') > -1) {
-            console.log(6666666);
-            await sleep(5000);
+            let n = 50;
             try {
-                for (const e of [...(document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container .ant-row > div') as any)]) {
-                    console.log(e.style.width);
-                    e.style.width = '10%';
+                while (n > 0) {
+                    for (const e of [...(document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container .ant-row > div') as any)]) {
+                        console.log(e.style.width);
+                        e.style.width = '10%';
+                    }
+                    n--;
+                    await sleep(100);
                 }
             } catch (e) {
                 console.info('插件报错，不用管', e);
