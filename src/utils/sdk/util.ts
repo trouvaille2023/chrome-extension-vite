@@ -138,7 +138,7 @@ export async function setJushuitanCardSize() {
                     if (window.location.href.indexOf('/manage/goods/qualitySupplier/goodsDetail') > -1){
                         (
                             document.querySelectorAll('.antd-pro-pages-channel-goods-detail-new-components-detail-index-pic_container') as any
-                        ).style.width = '40%';
+                        ).style.width = '40% !important';
                     }
                     await sleep(300);
                 }
