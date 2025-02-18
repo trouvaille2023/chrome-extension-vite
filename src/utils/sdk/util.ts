@@ -135,6 +135,11 @@ export async function setJushuitanCardSize() {
                         console.log(e.style.width);
                         e.style.width = '10%';
                     }
+                    if (window.location.href.indexOf('/manage/goods/qualitySupplier/goodsDetail') > -1){
+                        (
+                            document.querySelectorAll('.antd-pro-pages-channel-goods-detail-new-components-detail-index-pic_container') as any
+                        ).style.width = '40%';
+                    }
                     await sleep(300);
                 }
             } catch (e) {
