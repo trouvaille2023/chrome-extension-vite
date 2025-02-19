@@ -159,17 +159,17 @@ try {
             console.log(`彩蛋🥚🥚🥚 callback`);
         }
     );
-    // chrome.contextMenus.create(
-    //     {
-    //         type: 'normal',
-    //         title: 'div->img',
-    //         id: 'imgAction',
-    //         contexts: ['all'],
-    //     },
-    //     (e) => {
-    //         console.log(`彩蛋🥚🥚🥚 callback`);
-    //     }
-    // );
+    chrome.contextMenus.create(
+        {
+            type: 'normal',
+            title: '过滤聚水潭小于300库存的',
+            id: 'ignoreLittleStock',
+            contexts: ['all'],
+        },
+        (e) => {
+            console.log(`彩蛋🥚🥚🥚 callback`);
+        }
+    );
     // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     //     setTimeout(() => {
     //         chrome.tabs.sendMessage(tabs[0].id, { message: 'Hello from background.js' });
@@ -180,6 +180,9 @@ try {
     chrome.contextMenus.onClicked.addListener(function (info, tab) {
         if (info.menuItemId === 'performAction') {
             chrome.tabs.sendMessage(tab.id, { action: 'performAction' });
+        }
+        if (info.menuItemId === 'ignoreLittleStock') {
+            chrome.tabs.sendMessage(tab.id, { action: 'ignoreLittleStock' });
         }
     });
     // 处理菜单项点击事件
