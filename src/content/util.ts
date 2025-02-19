@@ -194,14 +194,20 @@ export function initPageEvent() {
  * 过滤掉聚水潭上库存小于300的品（取消选择）
  */
 function ignoreLittleStock() {
-    let list = document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container >.ant-row > div') as any;
-    for (let e of list) {
-        let stock = e.querySelector('.antd-pro-components-goods-list-components-item-index-num').textContent;
-        if (+stock < 300) {
-            e.querySelector(
-                '.ant-checkbox-wrapper-checked.antd-pro-components-goods-list-index-checkbox .ant-checkbox-checked .ant-checkbox-input'
-            ).click();
+    try {
+        let list = document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container >.ant-row > div') as any;
+        for (let e of list) {
+            let stock = e.querySelector('.antd-pro-components-goods-list-components-item-index-num').textContent;
+            if (+stock < 300) {
+                e.querySelector(
+                    '.ant-checkbox-wrapper-checked.antd-pro-components-goods-list-index-checkbox .ant-checkbox-checked .ant-checkbox-input'
+                ).click();
+            }
         }
+        showToast('操作成功', { duration: 1000, backgroundColor: '#28a745', textColor: '#fff' });
+    } catch (e) {
+        showToast('操作失败', { duration: 1000, backgroundColor: '#28a745', textColor: '#fff' });
+        console.info('插件报错，不用管', e);
     }
 }
 
@@ -277,4 +283,50 @@ function loadEditBatch() {
     elems.forEach((e) => {
         e.click();
     });
+}
+
+function showToast(message: string, options = {}) {
+    // 默认配置
+    const defaultOptions = {
+        duration: 3000, // 显示时长
+        animationDuration: 500, // 动画时长
+        backgroundColor: '#333', // 背景色
+        textColor: '#fff', // 文本颜色
+    };
+    // 合并用户配置和默认配置
+    const finalOptions = { ...defaultOptions, ...options };
+    // 创建toast元素
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.style.position = 'fixed';
+    toast.style.top = '120px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = '#333';
+    toast.style.color = '#fff';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '5px';
+    toast.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+    toast.style.zIndex = '1000';
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s ease-in-out';
+    toast.style.backgroundColor = finalOptions.backgroundColor;
+    toast.style.color = finalOptions.textColor;
+    toast.textContent = message;
+    // 将toast添加到body中
+    document.body.appendChild(toast);
+    // 显示动画
+    setTimeout(() => {
+        toast.style.opacity = '1';
+    }, 50);
+    // 隐藏处理
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        // 动画完成后再移除元素
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, finalOptions.animationDuration);
+    }, finalOptions.duration);
 }
