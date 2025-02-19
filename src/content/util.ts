@@ -178,12 +178,12 @@ export function initPageEvent() {
             // getGoodsList();
             loadEditBatch();
         }
-        if (message.action === 'toGetGoodsList') {
-            getGoodsList();
-        }
-        if (message.action === 'toGetAllGoodsList') {
-            getAllGoodsList();
-        }
+        // if (message.action === 'toGetGoodsList') {
+        //     getGoodsList();
+        // }
+        // if (message.action === 'toGetAllGoodsList') {
+        //     getAllGoodsList();
+        // }
         if (message.action === 'ignoreLittleStock') {
             ignoreLittleStock();
         }
@@ -194,16 +194,18 @@ export function initPageEvent() {
  * 过滤掉聚水潭上库存小于300的品（取消选择）
  */
 function ignoreLittleStock() {
-    let list = document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container >.ant-row > div')
+    let list = document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container >.ant-row > div') as any;
     for (let e of list) {
-        let stock = e.querySelector('.antd-pro-components-goods-list-components-item-index-num').textContent
+        let stock = e.querySelector('.antd-pro-components-goods-list-components-item-index-num').textContent;
         if (+stock < 300) {
-            e.querySelector('.ant-checkbox-wrapper-checked.antd-pro-components-goods-list-index-checkbox .ant-checkbox-checked .ant-checkbox-input').click()
+            e.querySelector(
+                '.ant-checkbox-wrapper-checked.antd-pro-components-goods-list-index-checkbox .ant-checkbox-checked .ant-checkbox-input'
+            ).click();
         }
     }
 }
 
-
+/*
 function getGoodsList() {
     let formattedDate = getFormattedDate();
     let shops = [];
@@ -237,6 +239,7 @@ function getAllGoodsList() {
     }
     saveFile(shops.join('\n') + '\n', `${formattedDate}-${dname}`);
 }
+*/
 
 function saveFile(data: string, filename: string) {
     if (!data) {
@@ -275,4 +278,3 @@ function loadEditBatch() {
         e.click();
     });
 }
-

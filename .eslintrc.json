@@ -16,6 +16,7 @@
   },
   "plugins": ["vue", "@typescript-eslint"],
   "rules": {
-    "no-undef": "off"
+    "no-undef": "off",
+    "prefer-const": "off"
   }
 }

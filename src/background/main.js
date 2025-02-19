@@ -181,16 +181,16 @@ try {
         if (info.menuItemId === 'performAction') {
             chrome.tabs.sendMessage(tab.id, { action: 'performAction' });
         }
+    });
+    // 处理菜单项点击事件
+    chrome.contextMenus.onClicked.addListener(function (info, tab) {
+        // if (info.menuItemId === 'imgAction') {
+        //     chrome.tabs.sendMessage(tab.id, { action: 'imgAction' });
+        // }
         if (info.menuItemId === 'ignoreLittleStock') {
             chrome.tabs.sendMessage(tab.id, { action: 'ignoreLittleStock' });
         }
     });
-    // 处理菜单项点击事件
-    // chrome.contextMenus.onClicked.addListener(function (info, tab) {
-    //     if (info.menuItemId === 'imgAction') {
-    //         chrome.tabs.sendMessage(tab.id, { action: 'imgAction' });
-    //     }
-    // });
 } catch (e) {
     console.error(e);
 }
