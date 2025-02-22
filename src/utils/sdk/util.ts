@@ -123,23 +123,24 @@ export async function set96ksheight() {
     }
 }
 
+let count = 0;
 /**
  *
  */
 export async function setJushuitanCardSize() {
     try {
-        if (window.location.href.indexOf('scm121.com') > -1) {
+        if (window.location.href.indexOf('scm121.com') > -1 && count < 10) {
             try {
                 while (window.location.href.indexOf('scm121.com') > -1) {
                     for (const e of [...(document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container .ant-row > div') as any)]) {
-                        console.log(e.style.width);
                         e.style.width = '10%';
                     }
-                    if (window.location.href.indexOf('/manage/goods/qualitySupplier/goodsDetail') > -1){
+                    if (window.location.href.indexOf('/manage/goods/qualitySupplier/goodsDetail') > -1) {
                         (
                             document.querySelector('.antd-pro-pages-channel-goods-detail-new-components-detail-index-pic_container') as any
                         ).style.width = '40%';
                     }
+                    count++;
                     await sleep(300);
                 }
             } catch (e) {
