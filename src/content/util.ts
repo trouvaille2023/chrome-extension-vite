@@ -172,20 +172,16 @@ async function getContextMenuListener() {
 export function initPageEvent() {
     chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         if (message.action === 'performAction') {
-            // getGoodsList();
             loadEditBatch();
         }
-        // if (message.action === 'toGetGoodsList') {
-        //     getGoodsList();
-        // }
-        // if (message.action === 'toGetAllGoodsList') {
-        //     getAllGoodsList();
-        // }
         if (message.action === 'ignoreLittleStock') {
             ignoreLittleStock();
         }
         if (message.action === 'batchClickUnreadMessage') {
             batchClickUnreadMessage();
+        }
+        if (message.action === 'ignoreShortTitle') {
+            ignoreShortTitle();
         }
     });
 }
@@ -199,6 +195,26 @@ function ignoreLittleStock() {
         for (let e of list) {
             let stock = e.querySelector('.antd-pro-components-goods-list-components-item-index-num').textContent;
             if (+stock < 300) {
+                e.querySelector(
+                    '.ant-checkbox-wrapper-checked.antd-pro-components-goods-list-index-checkbox .ant-checkbox-checked .ant-checkbox-input'
+                ).click();
+            }
+        }
+        showToast('操作成功', { duration: 1000, backgroundColor: '#28a745', textColor: '#fff' });
+    } catch (e) {
+        showToast('操作失败', { duration: 1000, backgroundColor: '#28a745', textColor: '#fff' });
+        console.info('插件报错，不用管', e);
+    }
+}
+/**
+ * 过滤掉聚水潭上标题少于15个字的品（取消选择）
+ */
+function ignoreShortTitle() {
+    try {
+        let list = document.querySelectorAll('#fxzzGoodsListBox .ant-spin-container >.ant-row > div') as any;
+        for (let e of list) {
+            let stock = e.querySelector('.antd-pro-components-goods-list-components-item-index-itemTitle').textContent.length;
+            if (+stock < 15) {
                 e.querySelector(
                     '.ant-checkbox-wrapper-checked.antd-pro-components-goods-list-index-checkbox .ant-checkbox-checked .ant-checkbox-input'
                 ).click();
