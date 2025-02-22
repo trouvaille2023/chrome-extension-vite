@@ -17,11 +17,6 @@ function initData(list) {
     // console.log('====-->', 'initData');
 
     chrome.storage.local.get(['siteList'], async (result) => {
-        // if (Object.values(result).length) {
-        //     console.count('siteList');
-        //     let siteList = [];
-        //     await chrome.storage.local.set({ siteList });
-        // }
         if (result?.siteList) {
             let newList = [...result.siteList, ...list].reverse();
             newList = newList.reduce((pre, cur) => {
@@ -142,73 +137,43 @@ chrome.runtime.onMessage.addListener(function ({ event, data }, sender, callback
 });
 
 function initHandle(_, sendResponse) {
-    // console.log('初始化数据');
     initData([]);
     sendResponse();
 }
 
+const items = [
+    { id: 'performAction', title: '批量打开编辑' },
+    { id: 'ignoreLittleStock', title: '过滤聚水潭小于300库存的' },
+    { id: 'batchClickUnreadMessage', title: '批量点击未读消息' },
+];
 try {
-    chrome.contextMenus.create(
-        {
-            type: 'normal',
-            title: '批量打开编辑',
-            id: 'performAction',
-            contexts: ['all'],
-        },
-        (e) => {
-            console.log(`彩蛋🥚🥚🥚 callback`);
-        }
-    );
-    chrome.contextMenus.create(
-        {
-            type: 'normal',
-            title: '过滤聚水潭小于300库存的',
-            id: 'ignoreLittleStock',
-            contexts: ['all'],
-        },
-        (e) => {
-            console.log(`彩蛋🥚🥚🥚 callback`);
-        }
-    );
-    // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    //     setTimeout(() => {
-    //         chrome.tabs.sendMessage(tabs[0].id, { message: 'Hello from background.js' });
-    //     }, 3000);
-    // });
+    for (let item of items) {
+        chrome.contextMenus.create(
+            {
+                type: 'normal',
+                title: item.title,
+                id: item.id,
+                contexts: ['all'],
+            },
+            (e) => {
+                console.log(`彩蛋🥚🥚🥚 callback`);
+            }
+        );
 
-    // 处理菜单项点击事件
-    chrome.contextMenus.onClicked.addListener(function (info, tab) {
-        if (info.menuItemId === 'performAction') {
-            chrome.tabs.sendMessage(tab.id, { action: 'performAction' });
-        }
-    });
-    // 处理菜单项点击事件
-    chrome.contextMenus.onClicked.addListener(function (info, tab) {
-        // if (info.menuItemId === 'imgAction') {
-        //     chrome.tabs.sendMessage(tab.id, { action: 'imgAction' });
-        // }
-        if (info.menuItemId === 'ignoreLittleStock') {
-            chrome.tabs.sendMessage(tab.id, { action: 'ignoreLittleStock' });
-        }
-    });
+        // 处理菜单项点击事件
+        chrome.contextMenus.onClicked.addListener(function (info, tab) {
+            if (info.menuItemId === item.id) {
+                chrome.tabs.sendMessage(tab.id, { action: item.id });
+            }
+        });
+    }
+
+    // // 处理菜单项点击事件
+    // chrome.contextMenus.onClicked.addListener(function (info, tab) {
+    //     if (info.menuItemId === 'ignoreLittleStock') {
+    //         chrome.tabs.sendMessage(tab.id, { action: 'ignoreLittleStock' });
+    //     }
+    // });
 } catch (e) {
     console.error(e);
 }
-
-// chrome.contextMenus.create(
-//     {
-//         type: 'normal',
-//         title: '立即填充用户名和密码',
-//         id: 'fillAccountAndPassword',
-//         contexts: ['all'],
-//     },
-//     (e) => {}
-// );
-//
-// console.log(chrome.contextMenus);
-//
-// chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-//     chrome.runtime.sendMessage({ event: 'easterEgg' }, () => {
-//         return true;
-//     });
-// });

@@ -1,5 +1,3 @@
-import html2canvas from 'html2canvas';
-
 export async function injectBox() {
     try {
         chrome.runtime.sendMessage({ event: 'getSiteList', data: null }, async (data) => {
@@ -165,7 +163,6 @@ async function getContextMenuListener() {
         switch (event) {
             case 'easterEgg':
                 console.log(`💐💐💐💐💐💐`);
-                alert('💐💐💐💐💐💐');
                 break;
         }
         return true;
@@ -187,6 +184,9 @@ export function initPageEvent() {
         if (message.action === 'ignoreLittleStock') {
             ignoreLittleStock();
         }
+        if (message.action === 'batchClickUnreadMessage') {
+            batchClickUnreadMessage();
+        }
     });
 }
 
@@ -207,6 +207,18 @@ function ignoreLittleStock() {
         showToast('操作成功', { duration: 1000, backgroundColor: '#28a745', textColor: '#fff' });
     } catch (e) {
         showToast('操作失败', { duration: 1000, backgroundColor: '#28a745', textColor: '#fff' });
+        console.info('插件报错，不用管', e);
+    }
+}
+
+function batchClickUnreadMessage() {
+    try {
+        let list = document.querySelectorAll('div[class^=messageContainer] .auxo-checkbox-input') as any;
+        for (const ele of list) {
+            ele.click();
+        }
+        showToast('操作成功');
+    } catch (e) {
         console.info('插件报错，不用管', e);
     }
 }
@@ -285,6 +297,11 @@ function loadEditBatch() {
     });
 }
 
+/**
+ * toast 提示
+ * @param message
+ * @param options
+ */
 function showToast(message: string, options = {}) {
     // 默认配置
     const defaultOptions = {
@@ -302,7 +319,7 @@ function showToast(message: string, options = {}) {
     toast.style.top = '120px';
     toast.style.left = '50%';
     toast.style.transform = 'translateX(-50%)';
-    toast.style.backgroundColor = '#333';
+    toast.style.backgroundColor = '#28a745';
     toast.style.color = '#fff';
     toast.style.padding = '10px 20px';
     toast.style.borderRadius = '5px';
