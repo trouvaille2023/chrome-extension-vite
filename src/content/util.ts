@@ -183,6 +183,12 @@ export function initPageEvent() {
         if (message.action === 'ignoreShortTitle') {
             ignoreShortTitle();
         }
+        if (message.action === 'batchCopyJSTGoodsCode') {
+            batchCopyJSTGoodsCode();
+        }
+        if (message.action === 'batchCopyJSTDyGoodsID') {
+            batchCopyJSTDyGoodsID();
+        }
     });
 }
 
@@ -227,6 +233,9 @@ function ignoreShortTitle() {
     }
 }
 
+/**
+ * 批量选中抖店未读消息
+ */
 function batchClickUnreadMessage() {
     try {
         let list = document.querySelectorAll('div[class^=messageContainer] .auxo-checkbox-input') as any;
@@ -234,6 +243,45 @@ function batchClickUnreadMessage() {
             ele.click();
         }
         showToast('操作成功');
+    } catch (e) {
+        console.info('插件报错，不用管', e);
+    }
+}
+
+/**
+ * 批量复制聚水潭筛选出来的资料编码
+ */
+function batchCopyJSTGoodsCode() {
+    try {
+        /**
+         * [...document.querySelectorAll('.antd-pro-components-goods-list-components-item-index-styleCodeContent .antd-pro-components-goods-list-components-item-index-colorBlack')].map(i=>i.textContent).join()
+         */
+        let list = document.querySelectorAll(
+            '.antd-pro-components-goods-list-components-item-index-styleCodeContent .antd-pro-components-goods-list-components-item-index-colorBlack'
+        ) as any;
+        const result = list.map((i: any) => i.textContent).join();
+        navigator.clipboard.writeText(result).then(() => {
+            showToast('复制成功');
+        });
+
+        console.log(result);
+    } catch (e) {
+        console.info('插件报错，不用管', e);
+    }
+}
+
+/**
+ * 批量复制已上架店铺的ID
+ */
+function batchCopyJSTDyGoodsID() {
+    try {
+        let list = document.querySelectorAll('.antd-pro-pages-supplier-distribution-goods-manage-components-table-index-link') as any;
+        const result = list.map((i: any) => i.href.replace(/.*?id=/gi, '').replace(/&o.*/gi, '')).join();
+        navigator.clipboard.writeText(result).then(() => {
+            showToast('复制成功');
+        });
+
+        console.log(result);
     } catch (e) {
         console.info('插件报错，不用管', e);
     }

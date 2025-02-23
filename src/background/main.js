@@ -146,6 +146,8 @@ const items = [
     { id: 'ignoreLittleStock', title: '过滤聚水潭小于300库存的' },
     { id: 'batchClickUnreadMessage', title: '批量点击未读消息' },
     { id: 'ignoreShortTitle', title: '过滤聚水潭标题不完整的' },
+    { id: 'batchCopyJSTGoodsCode', title: '批量复制聚水潭资料编码' },
+    { id: 'batchCopyJSTDyGoodsID', title: '批量复制聚水潭上架抖店ID' },
 ];
 try {
     for (let item of items) {

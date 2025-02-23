@@ -125,7 +125,7 @@ export async function set96ksheight() {
 
 let count = 0;
 /**
- *
+ *  重置聚水潭卡片大小
  */
 export async function setJushuitanCardSize() {
     try {
