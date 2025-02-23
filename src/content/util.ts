@@ -259,7 +259,7 @@ function batchCopyJSTGoodsCode() {
         let list = document.querySelectorAll(
             '.antd-pro-components-goods-list-components-item-index-styleCodeContent .antd-pro-components-goods-list-components-item-index-colorBlack'
         ) as any;
-        const result = list.map((i: any) => i.textContent).join();
+        const result = [...list].map((i: any) => i.textContent).join();
         navigator.clipboard.writeText(result).then(() => {
             showToast('复制成功');
         });
@@ -276,10 +276,13 @@ function batchCopyJSTGoodsCode() {
 function batchCopyJSTDyGoodsID() {
     try {
         let list = document.querySelectorAll('.antd-pro-pages-supplier-distribution-goods-manage-components-table-index-link') as any;
-        const result = list.map((i: any) => i.href.replace(/.*?id=/gi, '').replace(/&o.*/gi, '')).join();
-        navigator.clipboard.writeText(result).then(() => {
-            showToast('复制成功');
-        });
+        const result = [...list].map((i: any) => i.href.replace(/.*?id=/gi, '').replace(/&o.*/gi, '')).join();
+        navigator.clipboard
+            .writeText(result)
+            .then(() => {
+                showToast('复制成功');
+            })
+            .catch((e) => console.log(e));
 
         console.log(result);
     } catch (e) {
